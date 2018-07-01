@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Tentang Kampungan Editor v1.0</title>
+	<script language="javascript" type="text/javascript" src="../../kampungan_popup.js"></script>
+	<script language="javascript" type="text/javascript" src="../../utils/mctabs.js"></script>
+	<script language="javascript" type="text/javascript" src="jscripts/about.js"></script>
+	<base target="_self" />
+</head>
+<body id="about" onload="kampunganPopup.executeOnLoad('init();');" style="display: none">
+		<div class="tabs">
+			
+  <ul>
+    <li id="general_tab" class="current"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{$lang_about}</a></span></li>
+  </ul>
+</div>
+<div class="panel_wrapper">
+  <div id="general_panel" class="panel current"> 
+    <h3>Tentang Kampungan Editor</h3>
+				
+    <p>Kampungan Editor v1.0 adalah turunan dari TinyMCE. <br>
+	Dikembangkan oleh <strong>Agus Muhajir,S.Kom</strong> . 
+	<br>
+	<br>
+	
+	Jika Anda mempunyai kritik, saran maupun komentar, <br>
+	kirimkan saja ke : 
+	<br>
+	<br>
+	
+	E-Mail : 
+	<br>
+	<em>hajirodeon@yahoo.com</em>
+	<br>
+	<br>
+	
+	HP/SMS : 
+	<br>
+	<em>081-829-88-54</em>
+	<br>
+	<br>
+	
+	URL :
+	<br>
+	<em>http://sisfokol.wordpress.com</em>
+	<br>
+	<br>
+	</p>
+				
+    <div id="buttoncontainer"></div>
+			</div>
+
+			
+		</div>
+
+		<div class="mceActionPanel">
+			<div style="float: right">
+				<input type="button" id="cancel" name="cancel" value="{$lang_close}" onclick="kampunganPopup.close();" />
+			</div>
+		</div>
+</body>
+</html>

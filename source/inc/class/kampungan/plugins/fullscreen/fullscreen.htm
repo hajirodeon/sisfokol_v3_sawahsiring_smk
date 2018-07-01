@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{$lang_fullscreen_title}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<script language="javascript" type="text/javascript" src="../../kampungan.js"></script>
+	<script language="javascript" type="text/javascript">
+		function patchCallback(settings, key) {
+			if (settings[key])
+				settings[key] = "window.opener." + settings[key];
+		}
+
+		var settings = new Array();
+
+		// Clone array
+		for (var name in window.opener.kampungan.settings)
+			settings[name] = window.opener.kampungan.settings[name];
+
+		// Override options for fullscreen
+		for (var name in window.opener.kampungan.settings.fullscreen_settings)
+			settings[name] = window.opener.kampungan.settings.fullscreen_settings[name];
+
+		// Patch callbacks, make them point to window.opener
+		patchCallback(settings, 'urlconverter_callback');
+		patchCallback(settings, 'insertlink_callback');
+		patchCallback(settings, 'insertimage_callback');
+		patchCallback(settings, 'setupcontent_callback');
+		patchCallback(settings, 'save_callback');
+		patchCallback(settings, 'onchange_callback');
+		patchCallback(settings, 'init_instance_callback');
+		patchCallback(settings, 'file_browser_callback');
+		patchCallback(settings, 'cleanup_callback');
+		patchCallback(settings, 'execcommand_callback');
+		patchCallback(settings, 'oninit');
+
+		// Set options
+		settings['mode'] = 'exact';
+		settings['elements'] = 'fullscreenarea';
+		settings['ask'] = false;
+		settings['setupcontent_callback'] = 'setupContent';
+		settings['fullscreen_is_enabled'] = true;
+		settings['fullscreen_editor_id'] = window.opener.kampungan.getWindowArg("editor_id");
+		settings['theme_advanced_resizing'] = false;
+
+		// Init
+		kampungan.init(settings);
+		kampungan.documentBasePath = window.opener.kampungan.documentBasePath;
+
+		function setupContent(editor_id, body, doc) {
+			var inst = kampungan.getInstanceById(editor_id);
+			var content = window.opener.kampungan.getContent(kampungan.getParam('fullscreen_editor_id'));
+
+			// Setup title
+			var divElm = document.createElement("div");
+			divElm.innerHTML = kampunganLang['lang_fullscreen_title'];
+			document.title = divElm.innerHTML;
+
+			// Get content
+			inst.execCommand('mceSetContent', false, content);
+		}
+
+		function unloadHandler(e) {
+			moveContent();
+		}
+
+		function moveContent() {
+			var doc = kampungan.isMSIE ? window.frames['mce_editor_0'].window.document : document.getElementById('mce_editor_0').contentDocument;
+			window.opener.kampungan.setInnerHTML(window.opener.kampungan.selectedInstance.getBody(), doc.body.innerHTML);
+		}
+
+		// Add onunload
+		kampungan.addEvent(window, "beforeunload", unloadHandler);
+
+		function doParentSubmit() {
+			moveContent();
+
+			if (window.opener.kampungan.selectedInstance.formElement.form)
+				window.opener.kampungan.selectedInstance.formElement.form.submit();
+
+			window.close();
+
+			return false;
+		}
+	</script>
+	<base target="_self" />
+</head>
+<body style="margin: 0; overflow: hidden; height: 100%" scrolling="no" scroll="no">
+<form onsubmit="doParentSubmit();" style="height: 100%">
+<textarea id="fullscreenarea" style="width: 100%; height: 100%"></textarea>
+</form>
+</body>
+</html>
